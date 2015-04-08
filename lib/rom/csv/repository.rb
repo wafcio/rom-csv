@@ -1,4 +1,5 @@
 require 'rom/repository'
+require 'rom/csv/connection'
 require 'rom/csv/dataset'
 
 # Ruby Object Mapper
@@ -42,19 +43,10 @@ module ROM
       # Expect a path to a single csv file which will be registered by rom to
       # the given name or :default as the repository.
       #
-      # Uses CSV.table which passes the following csv options:
-      # * headers: true
-      # * converters: numeric
-      # * header_converters: :symbol
-      #
       # @param path [String] path to csv
       #
-      # @api private
-      #
-      # @see CSV.table
       def initialize(path)
-        @datasets = {}
-        @connection = ::CSV.table(path).by_row!
+        @connection = Connection.new(path)
       end
 
       # Return dataset with the given name
@@ -63,8 +55,8 @@ module ROM
       # @return [Dataset]
       #
       # @api public
-      def [](name)
-        datasets[name]
+      def [](_name)
+        connection
       end
 
       # Register a dataset in the repository
@@ -75,8 +67,8 @@ module ROM
       # @return [Dataset]
       #
       # @api public
-      def dataset(name)
-        datasets[name] = Dataset.new(connection)
+      def dataset(_name)
+        connection
       end
 
       # Check if dataset exists
@@ -84,14 +76,9 @@ module ROM
       # @param name [String] dataset name
       #
       # @api public
-      def dataset?(name)
-        datasets.key?(name)
+      def dataset?(_name)
+        File.exists?(connection.path)
       end
-
-      private
-
-      # @api private
-      attr_reader :datasets
     end
   end
 end

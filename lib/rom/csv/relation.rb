@@ -10,7 +10,26 @@ module ROM
     #
     # @api public
     class Relation < ROM::Relation
-      forward :join, :project, :restrict, :order
+      # Restrict a dataset
+      #
+      # @api public
+      def restrict(criteria = nil)
+        __new__(dataset.dataset.restrict(criteria))
+      end
+
+      # Project a dataset
+      #
+      # @api public
+      def project(*names)
+        __new__(dataset.dataset.project(*names))
+      end
+
+      # Sort a dataset
+      #
+      # @api public
+      def order(*names)
+        __new__(dataset.dataset.order(*names))
+      end
     end
   end
 end

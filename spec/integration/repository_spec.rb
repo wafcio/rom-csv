@@ -11,6 +11,10 @@ describe 'CSV repository' do
 
   before do
     setup.relation(:users) do
+      def by_id(id)
+        restrict(id: id)
+      end
+
       def by_name(name)
         restrict(name: name)
       end
@@ -37,6 +41,11 @@ describe 'CSV repository' do
         model User
         register_as :entity
       end
+    end
+
+    setup.commands(:users) do
+      define(:create)
+      define(:update)
     end
   end
 
@@ -68,6 +77,18 @@ describe 'CSV repository' do
 
       expect(results[2].name).to eql('Julie')
       expect(results[2].email).to eq('julie@doe.org')
+    end
+  end
+
+  describe 'commands' do
+    # it 'create' do
+    #   result = rom.commands.users.create.call(name: 'Jane', surname: 'Doe')
+    # end
+
+    it 'update' do
+      puts rom.commands.users.update.by_id(1).inspect
+
+      rom.commands.users.update.by_id(1).set(name: 'John')
     end
   end
 end

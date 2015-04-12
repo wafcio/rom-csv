@@ -1,4 +1,5 @@
 require 'rom/repository'
+require 'rom/csv/commands'
 require 'rom/csv/connection'
 require 'rom/csv/dataset'
 

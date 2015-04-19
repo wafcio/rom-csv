@@ -48,14 +48,15 @@ module ROM
       # * header_converters: :symbol
       #
       # @param path [String] path to csv
-      # @param options [Hash] options passed to CSV.table
+      # @param options [Hash] options passed to Dataset and next to CSV.table
       #
       # @api private
       #
       # @see CSV.table
       def initialize(path, options = {})
+        @path = path
+        @options = options
         @datasets = {}
-        @connection = ::CSV.table(path, options).by_row!
       end
 
       # Return dataset with the given name
@@ -77,7 +78,7 @@ module ROM
       #
       # @api public
       def dataset(name)
-        datasets[name] = Dataset.new(connection)
+        datasets[name] = Dataset.new(path, options)
       end
 
       # Check if dataset exists
@@ -92,7 +93,7 @@ module ROM
       private
 
       # @api private
-      attr_reader :datasets
+      attr_reader :path, :options, :datasets
     end
   end
 end

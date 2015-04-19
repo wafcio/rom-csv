@@ -1,5 +1,6 @@
 require 'rom/csv/dataset/load_data'
 require 'rom/csv/dataset/read_operations'
+require 'rom/csv/dataset/write_operations'
 
 module ROM
   module CSV
@@ -9,6 +10,7 @@ module ROM
     class Dataset
       include LoadData
       include ReadOperations
+      include WriteOperations
 
       attr_reader :path, :options, :data, :headers
 

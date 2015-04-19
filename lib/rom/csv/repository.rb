@@ -1,5 +1,6 @@
 require 'rom/repository'
 require 'rom/csv/dataset'
+require 'rom/csv/commands'
 
 # Ruby Object Mapper
 #

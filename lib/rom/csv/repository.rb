@@ -1,5 +1,6 @@
 require 'rom/repository'
 require 'rom/csv/dataset'
+require 'rom/csv/commands'
 
 # Ruby Object Mapper
 #
@@ -55,6 +56,7 @@ module ROM
       # @see CSV.table
       def initialize(path, options = {})
         @datasets = {}
+        @path = path
         @connection = ::CSV.table(path, options).by_row!
       end
 
@@ -77,6 +79,7 @@ module ROM
       #
       # @api public
       def dataset(name)
+        Path.set(name, path)
         datasets[name] = Dataset.new(connection)
       end
 
@@ -92,7 +95,7 @@ module ROM
       private
 
       # @api private
-      attr_reader :datasets
+      attr_reader :path, :datasets
     end
   end
 end

@@ -14,6 +14,10 @@ module ROM
           data[index].merge!(tuple)
         end
 
+        def delete(tuple)
+          data.delete(tuple)
+        end
+
         def write
           ::CSV.open(path, 'wb', options) do |csv|
             csv << headers

@@ -35,6 +35,10 @@ module ROM
         reload
         output
       end
+
+      def count
+        data.count
+      end
     end
   end
 end

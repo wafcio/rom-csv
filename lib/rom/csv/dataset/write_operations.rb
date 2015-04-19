@@ -10,6 +10,10 @@ module ROM
           end
         end
 
+        def update(index, tuple)
+          data[index].merge!(tuple)
+        end
+
         def write
           ::CSV.open(path, 'wb', options) do |csv|
             csv << headers

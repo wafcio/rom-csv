@@ -19,7 +19,7 @@ module ROM
         end
 
         def write
-          ::CSV.open(path, 'wb', options) do |csv|
+          ::CSV.open(connection.path, 'wb', connection.options) do |csv|
             csv << headers
 
             data.each do |tuple|

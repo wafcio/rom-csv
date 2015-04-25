@@ -1,5 +1,5 @@
 require 'rom/repository'
-require 'rom/csv/dataset'
+require 'rom/csv/connection'
 require 'rom/csv/commands'
 
 # Ruby Object Mapper
@@ -79,7 +79,7 @@ module ROM
       #
       # @api public
       def dataset(name)
-        datasets[name] = Dataset.new(path, options)
+        datasets[name] = Connection.new(path, options)
       end
 
       # Check if dataset exists

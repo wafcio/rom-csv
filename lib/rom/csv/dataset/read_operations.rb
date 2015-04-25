@@ -13,56 +13,56 @@ module ROM
             (h[tuple] ||= []).concat(others)
           }
 
-          @data = left.flat_map { |tuple|
+          new_data = left.flat_map { |tuple|
             join_map[tuple].map { |other| tuple.merge(other) }
           }
 
-          self
+          Dataset.new(connection, new_data)
         end
 
         # Restrict a dataset
         #
         # @api public
         def restrict(criteria = nil)
-          if criteria
-            find_all! { |tuple| criteria.all? { |k, v| tuple[k].eql?(v) } }
+          new_data = if criteria
+            find_all { |tuple| criteria.all? { |k, v| tuple[k].eql?(v) } }
           else
-            find_all! { |tuple| yield(tuple) }
+            find_all { |tuple| yield(tuple) }
           end
 
-          self
+          Dataset.new(connection, new_data)
         end
 
         # Project a dataset
         #
         # @api public
         def project(*names)
-          map! { |tuple| tuple.reject { |key| !names.include?(key) } }
+          new_data = map { |tuple| tuple.reject { |key| !names.include?(key) } }
 
-          self
+          Dataset.new(connection, new_data)
         end
 
         # Sort a dataset
         #
         # @api public
         def order(*names)
-          sort_by! { |tuple| tuple.values_at(*names) }
+          new_data = sort_by { |tuple| tuple.values_at(*names) }
 
-          self
+          Dataset.new(connection, new_data)
         end
 
         private
 
-        def find_all!
-          data.select! { |d| yield(d) }
+        def find_all
+          data.select { |d| yield(d) }
         end
 
-        def map!
-          data.map! { |d| yield(d) }
+        def map
+          data.map { |d| yield(d) }
         end
 
-        def sort_by!
-          data.sort_by! { |d| yield(d) }
+        def sort_by
+          data.sort_by { |d| yield(d) }
         end
       end
     end

@@ -22,7 +22,7 @@ module ROM
         end
 
         def dataset
-          relation.dataset
+          @dataset ||= relation.dataset.new_dataset
         end
       end
     end

@@ -1,4 +1,3 @@
-require 'rom/csv/dataset/load_data'
 require 'rom/csv/dataset/read_operations'
 require 'rom/csv/dataset/write_operations'
 
@@ -8,32 +7,32 @@ module ROM
     #
     # @api public
     class Dataset
-      include LoadData
       include ReadOperations
       include WriteOperations
 
-      attr_reader :path, :options, :data, :headers
+      attr_reader :connection, :data
 
-      def initialize(path, options = {})
-        @path = path
-        @options = options
-        reload
+      def initialize(connection, data)
+        @connection = connection
+        @data = data
+      end
+
+      def headers
+        if data.any?
+          data.first.keys
+        else
+          []
+        end
       end
 
       def each
         data.each { |d| yield(d) }
       end
 
-      def to_a
-        output = data
-        reload
-        output
-      end
+      alias_method :to_a, :data
 
       def first
-        output = data.first
-        reload
-        output
+        data.first
       end
 
       def count

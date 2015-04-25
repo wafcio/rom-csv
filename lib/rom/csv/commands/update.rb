@@ -15,14 +15,14 @@ module ROM
         end
 
         def update(tuple)
-          original = dataset.to_a.first
-          index = dataset.data.index(original)
-          dataset.update(index, tuple)
-          dataset.write
+          original = relation.dataset.to_a.first
+          index = original_dataset.data.index(original)
+          original_dataset.update(index, tuple)
+          original_dataset.write
         end
 
-        def dataset
-          relation.dataset
+        def original_dataset
+          @original_dataset ||= relation.dataset.connection.new_dataset
         end
       end
     end
